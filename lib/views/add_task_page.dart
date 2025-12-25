@@ -18,31 +18,45 @@ class _AddTaskPageState extends State<AddTaskPage> {
   // Task properties
   DateTime? deadline;
   bool reminderEnabled = false;
-  Color selectedColor = Colors.blue;
+  // Color selectedColor = Colors.blue;
   IconData selectedCategory = Icons.work;
 
   // Build the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Task')),
+      appBar: AppBar(title: const Text('Add Task'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(16),
         // Form for task input
         child: Form(
           key: _formKey,
-          child: ListView(
-            children: [
-              // Various input fields
-              _titleField(),
-              _descriptionField(),
-              _deadlinePicker(context),
-              _categoryPicker(),
-              _colorPicker(),
-              _reminderSwitch(),
-              const SizedBox(height: 20),
-              _saveButton(),
-            ],
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    // Various input fields
+                    _titleField(),
+                    const SizedBox(height: 20),
+                    _descriptionField(),
+                    const SizedBox(height: 20),
+                    _categoryPicker(),
+                    const SizedBox(height: 20),
+                    _deadlinePicker(context),
+                    const SizedBox(height: 20),
+                    // _colorPicker(),
+                    // const SizedBox(height: 20),
+                    _reminderSwitch(),
+                    Spacer(),
+                    _saveButton(),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -53,6 +67,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _titleField() {
     return TextFormField(
       controller: titleController,
+      maxLength: 50,
       decoration: const InputDecoration(labelText: 'Title'),
       // Validation for title
       validator: (value) =>
@@ -64,8 +79,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget _descriptionField() {
     return TextFormField(
       controller: descriptionController,
+      maxLength: 100,
       decoration: const InputDecoration(labelText: 'Description'),
-      maxLines: 3,
     );
   }
 
@@ -98,22 +113,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  // Category picker
   Widget _categoryPicker() {
-    // Sample categories
-    final categories = [Icons.work, Icons.school, Icons.home, Icons.favorite];
-    // Display categories as choice chips
+    // Map each icon to a color
+    final Map<IconData, Color> categoryColors = {
+      Icons.work: Colors.blue,
+      Icons.school: Colors.orange,
+      Icons.home: Colors.green,
+      Icons.favorite: Colors.red,
+    };
+
     return Wrap(
-      // Spacing between chips
       spacing: 10,
-      children: categories.map((icon) {
-        // Create a choice chip for each category
+      children: categoryColors.entries.map((entry) {
+        final icon = entry.key;
+        final color = entry.value;
+        final isSelected = selectedCategory == icon;
+
         return ChoiceChip(
-          label: Icon(icon),
-          // Highlight if selected
-          selected: selectedCategory == icon,
+          label: Icon(
+            icon,
+            color: isSelected ? Colors.white : color, // Icon color
+          ),
+          selected: isSelected,
+          selectedColor: color, // Chip background when selected
+          backgroundColor: color.withOpacity(0.2), // Unselected chip
           onSelected: (_) {
-            // Update selected category
             setState(() => selectedCategory = icon);
           },
         );
@@ -121,32 +145,32 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  // Color picker
-  Widget _colorPicker() {
-    // Sample colors
-    final colors = [Colors.red, Colors.blue, Colors.green, Colors.orange];
-    // Display colors as selectable circles
-    return Wrap(
-      // Spacing between color options
-      spacing: 10,
-      // Generate color options
-      children: colors.map((color) {
-        // Create a selectable color circle
-        return GestureDetector(
-          // Select color on tap
-          onTap: () => setState(() => selectedColor = color),
-          // Display the color circle
-          child: CircleAvatar(
-            backgroundColor: color,
-            // Show checkmark if selected
-            child: selectedColor == color
-                ? const Icon(Icons.check, color: Colors.white)
-                : null,
-          ),
-        );
-      }).toList(),
-    );
-  }
+  // // Color picker
+  // Widget _colorPicker() {
+  //   // Sample colors
+  //   final colors = [Colors.red, Colors.blue, Colors.green, Colors.orange];
+  //   // Display colors as selectable circles
+  //   return Wrap(
+  //     // Spacing between color options
+  //     spacing: 10,
+  //     // Generate color options
+  //     children: colors.map((color) {
+  //       // Create a selectable color circle
+  //       return GestureDetector(
+  //         // Select color on tap
+  //         onTap: () => setState(() => selectedColor = color),
+  //         // Display the color circle
+  //         child: CircleAvatar(
+  //           backgroundColor: color,
+  //           // Show checkmark if selected
+  //           child: selectedColor == color
+  //               ? const Icon(Icons.check, color: Colors.white)
+  //               : null,
+  //         ),
+  //       );
+  //     }).toList(),
+  //   );
+  // }
 
   // Reminder switch
   Widget _reminderSwitch() {
@@ -177,7 +201,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             description: descriptionController.text,
             deadline: deadline,
             category: selectedCategory,
-            color: selectedColor,
+            // color: selectedColor,
             reminder: reminderEnabled,
           );
           // Return the new task to the previous screen

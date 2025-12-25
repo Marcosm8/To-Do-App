@@ -6,7 +6,7 @@ class Task {
   final String description;
   final DateTime? deadline;
   final IconData category;
-  final Color color;
+  // final Color color;
   final bool completed;
   final bool reminder;
 
@@ -16,7 +16,7 @@ class Task {
     required this.description,
     this.deadline,
     required this.category,
-    required this.color,
+    // required this.color,
     this.completed = false,
     required this.reminder,
   });
