@@ -9,6 +9,7 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Display task details
     return ListTile(
       leading: Icon(
         task.completed ? Icons.check_box : Icons.check_box_outline_blank,
@@ -21,6 +22,7 @@ class TaskWidget extends StatelessWidget {
               : TextDecoration.none,
         ),
       ),
+      // Show description and deadline if available
       subtitle: task.description.isNotEmpty ? Text(task.description) : null,
       trailing: task.deadline != null
           ? Text('${task.deadline!.toLocal()}'.split(' ')[0])
