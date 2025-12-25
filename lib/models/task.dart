@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Model class representing a Task
 class Task {
   final String title;
   final String description;
@@ -9,6 +10,7 @@ class Task {
   final bool completed;
   final bool reminder;
 
+  // Constructor for Task
   Task({
     required this.title,
     required this.description,
