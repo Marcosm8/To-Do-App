@@ -129,7 +129,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     return Wrap(
       spacing: 10,
+      // Generate choice chips for each category
       children: categoryColors.entries.map((entry) {
+        // Extract icon and color
         final icon = entry.key;
         final color = entry.value;
         final isSelected = selectedCategory == icon;
