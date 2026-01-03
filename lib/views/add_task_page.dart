@@ -25,7 +25,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Task'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Add Task'),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+      backgroundColor: Colors.blue[50],
       body: Padding(
         padding: const EdgeInsets.all(16),
         // Form for task input
